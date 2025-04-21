@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Container, Box, Typography, Button } from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -62,11 +62,7 @@ function App() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isSaveViewModalOpen, setIsSaveViewModalOpen] = useState(false);
   const [selectedView, setSelectedView] = useState<View | null>(null);
-
-  useEffect(() => {
-    fetchTransactions();
-    fetchViews();
-  }, []);
+  const initialLoadRef = useRef(false);
 
   const showError = (message: string) => {
     toast.error(message, {
@@ -121,10 +117,6 @@ function App() {
     fetchTransactions(newFilters);
   };
 
-  const handleSaveView = () => {
-    setIsSaveViewModalOpen(true);
-  };
-
   const handleDeleteView = async (id: number) => {
     try {
       const response = await fetch(`${API_URL}/views/${id}`, {
@@ -154,6 +146,19 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    if (!initialLoadRef.current) {
+      initialLoadRef.current = true;
+      const fetchInitialData = async () => {
+        await Promise.all([
+          fetchTransactions(),
+          fetchViews()
+        ]);
+      };
+      fetchInitialData();
+    }
+  }, []);
+
   return (
     <Container maxWidth="xl">
       <ToastContainer />
@@ -177,7 +182,7 @@ function App() {
             <TransactionFilters
               filters={filters}
               onFilterChange={handleFilterChange}
-              onSaveView={handleSaveView}
+              onSaveView={() => setIsSaveViewModalOpen(true)}
             />
             <TransactionTable
               transactions={transactions}
