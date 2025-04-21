@@ -12,6 +12,7 @@ import {
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { toast } from 'react-toastify';
 
 interface Transaction {
   id: number;
@@ -99,8 +100,10 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
       }
 
       onSuccess();
+      toast.success(transaction ? 'Transaction updated successfully' : 'Transaction added successfully');
     } catch (error) {
       console.error('Error saving transaction:', error);
+      toast.error('Failed to save transaction. Please try again.');
     }
   };
 

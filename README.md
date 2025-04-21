@@ -1,28 +1,68 @@
 # Transactions Management System
 
-A full-stack application for managing financial transactions with filtering and view saving capabilities.
+A full-stack application for managing financial transactions with filtering and saved views capabilities.
 
 ## Features
 
-- View transactions in a paginated table
-- Add, edit, and delete transactions
-- Filter transactions by various criteria
-- Save and manage filter views
-- Responsive design
+- View, add, edit, and delete transactions
+- Filter transactions by:
+  - Date range
+  - Account
+  - Transaction type (Credit/Debit/Others)
+  - Amount
+  - Category
+  - Tags
+  - Notes
+- Save and manage custom filter views
+- Responsive Material-UI based interface
+- TypeScript support for type safety
 
 ## Tech Stack
 
-- Frontend: React, Material-UI, Vite
-- Backend: Node.js, Express
-- Database: PostgreSQL
+### Frontend
+- React with TypeScript
+- Material-UI for components
+- @mui/x-date-pickers for date selection
+- @mui/x-data-grid for transaction table
+- Axios for API calls
 
-## Prerequisites
+### Backend
+- Node.js with Express
+- PostgreSQL database
+- TypeScript for type safety
+- RESTful API endpoints
 
+## Project Structure
+
+```
+transactions-ui/
+├── frontend/              # React frontend
+│   ├── src/
+│   │   ├── components/    # React components
+│   │   ├── App.tsx        # Main application component
+│   │   └── main.tsx       # Application entry point
+│   ├── package.json
+│   └── tsconfig.json
+│
+├── backend/               # Node.js backend
+│   ├── src/
+│   │   ├── routes/       # API routes
+│   │   ├── db.ts         # Database connection
+│   │   └── schema.sql    # Database schema
+│   ├── package.json
+│   └── tsconfig.json
+│
+└── README.md
+```
+
+## Getting Started
+
+### Prerequisites
 - Node.js (v14 or higher)
-- PostgreSQL (v12 or higher)
+- PostgreSQL
 - npm or yarn
 
-## Setup
+### Installation
 
 1. Clone the repository:
 ```bash
@@ -32,89 +72,59 @@ cd transactions-ui
 
 2. Install backend dependencies:
 ```bash
+cd backend
 npm install
 ```
 
 3. Install frontend dependencies:
 ```bash
-cd client
+cd ../frontend
 npm install
-cd ..
 ```
 
-4. Create a PostgreSQL database and update the `.env` file with your database credentials:
-```
-PORT=3002
-DB_USER=your_db_user
-DB_HOST=localhost
-DB_NAME=your_db_name
-DB_PASSWORD=your_db_password
-DB_PORT=5432
-```
+4. Set up the database:
+- Create a PostgreSQL database
+- Update the database connection settings in `backend/src/db.ts`
+- Run the schema.sql script to create tables
 
-5. Run the database schema:
+5. Start the backend server:
 ```bash
-psql -U your_db_user -d your_db_name -f schema.sql
-```
-
-## Running the Application
-
-1. Start the backend server:
-```bash
+cd backend
 npm run dev
 ```
 
-2. In a new terminal, start the frontend development server:
+6. Start the frontend development server:
 ```bash
-cd client
+cd frontend
 npm run dev
 ```
 
 The application will be available at:
-- Frontend: http://localhost:3000
+- Frontend: http://localhost:5173
 - Backend API: http://localhost:3002
 
 ## API Endpoints
 
 ### Transactions
-- GET /api/transactions - Get all transactions with optional filters
-- POST /api/transactions - Create a new transaction
-- PUT /api/transactions/:id - Update a transaction
-- DELETE /api/transactions/:id - Delete a transaction
+- GET `/api/transactions` - Get all transactions with optional filters
+- POST `/api/transactions` - Create a new transaction
+- PUT `/api/transactions/:id` - Update a transaction
+- DELETE `/api/transactions/:id` - Delete a transaction
 
 ### Views
-- GET /api/views - Get all saved views
-- POST /api/views - Save a new view or update existing
-- DELETE /api/views/:id - Delete a view
+- GET `/api/views` - Get all saved views
+- POST `/api/views` - Create a new view
+- PUT `/api/views/:id` - Update a view
+- DELETE `/api/views/:id` - Delete a view
 
-## Development
+## Contributing
 
-The project structure is organized as follows:
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-```
-transactions-ui/
-├── client/                 # React frontend with Vite
-│   ├── src/
-│   │   ├── components/    # React components
-│   │   ├── App.jsx       # Main application component
-│   │   └── main.jsx      # Application entry point
-│   ├── index.html        # HTML template
-│   ├── vite.config.js    # Vite configuration
-│   └── package.json
-├── routes/                # Express routes
-├── db.js                 # Database connection
-├── server.js             # Express server
-├── schema.sql            # Database schema
-└── package.json          # Backend dependencies
-```
+## License
 
-## Building for Production
-
-To build the frontend for production:
-
-```bash
-cd client
-npm run build
-```
-
-The built files will be in the `client/dist` directory. 
+This project is licensed under the MIT License. 

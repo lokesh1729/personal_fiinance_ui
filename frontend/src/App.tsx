@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Box, Typography, Button } from '@mui/material';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import TransactionTable from './components/TransactionTable';
 import TransactionFilters from './components/TransactionFilters';
 import TransactionViews from './components/TransactionViews';
@@ -66,12 +68,25 @@ function App() {
     fetchViews();
   }, []);
 
+  const showError = (message: string) => {
+    toast.error(message, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
+
   const fetchTransactions = async (filterParams: Partial<Filter> = {}) => {
     try {
       const response = await axios.get(`${API_URL}/transactions`, { params: filterParams });
       setTransactions(response.data);
     } catch (error) {
       console.error('Error fetching transactions:', error);
+      showError('Failed to fetch transactions. Please try again.');
     }
   };
 
@@ -81,6 +96,7 @@ function App() {
       setViews(response.data);
     } catch (error) {
       console.error('Error fetching views:', error);
+      showError('Failed to fetch views. Please try again.');
     }
   };
 
@@ -117,9 +133,7 @@ function App() {
       if (!response.ok) {
         throw new Error('Failed to delete view');
       }
-      // Refresh the views list
       await fetchViews();
-      // Clear selected view if it was deleted
       if (selectedView?.id === id) {
         setSelectedView(null);
         setFilters({
@@ -135,12 +149,14 @@ function App() {
       }
     } catch (error) {
       console.error('Error deleting view:', error);
+      showError('Failed to delete view. Please try again.');
       throw error;
     }
   };
 
   return (
     <Container maxWidth="xl">
+      <ToastContainer />
       <Box sx={{ my: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom align="center">
           Transactions Management
